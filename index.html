@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dèleite Saludable - App Pedidos</title>
+    <title>Dèleite Saludable - App de Pedidos</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -19,7 +19,7 @@
             background-color: var(--fondo);
             color: var(--texto);
             margin: 0;
-            padding-bottom: 220px;
+            padding-bottom: 240px;
         }
 
         header {
@@ -53,10 +53,13 @@
         h3 { 
             background: var(--primario); 
             color: white; 
-            padding: 10px 15px; 
+            padding: 12px 15px; 
             border-radius: 10px;
             margin-top: 30px;
             font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .producto {
@@ -70,20 +73,23 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
-        .controles { display: flex; align-items: center; gap: 12px; }
+        .info-prod { max-width: 65%; }
+        .desc-prod { font-size: 0.75rem; color: #777; display: block; margin-top: 4px; }
+
+        .controles { display: flex; align-items: center; gap: 10px; }
 
         .btn-qty {
             background: var(--secundario);
             color: white;
             border: none;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
         }
 
-        .cantidad { font-weight: bold; min-width: 25px; text-align: center; }
+        .cantidad { font-weight: bold; min-width: 20px; text-align: center; }
 
         .carrito-footer {
             position: fixed;
@@ -137,7 +143,7 @@
 <header>
     <img src="deleite-saludable.PNG" alt="Logo Dèleite" class="logo">
     <h2 style="margin:5px 0 0 0;">Dèleite Saludable</h2>
-    <small>Caucasia, Antioquia | 321 491 4775</small>
+    <small>Caucasia, Antioquia | Pedidos: 321 491 4775</small>
     <div id="reloj-colombia" style="font-size: 0.8rem; font-weight: bold; margin-top: 5px; color: var(--primario);"></div>
 </header>
 
@@ -146,20 +152,10 @@
         <input type="text" id="nombre" placeholder="Nombre completo">
         <input type="text" id="direccion" placeholder="Dirección de entrega">
         <input type="tel" id="telefono" placeholder="Celular de contacto">
-        <textarea id="observaciones" rows="2" placeholder="Notas adicionales (Ej: sin cebolla, apto para diabéticos...)"></textarea>
+        <textarea id="observaciones" rows="2" placeholder="Notas adicionales o cambios en el pedido..."></textarea>
     </div>
 
-    <h3>🥗 Bowl & Ensaladas</h3>
-    <div id="lista-bowls"></div>
-
-    <h3>🍕 Pizzas Integrales</h3>
-    <div id="lista-pizzas"></div>
-
-    <h3>🥤 Bebidas Naturales</h3>
-    <div id="lista-bebidas"></div>
-
-    <h3>🍪 Snacks Saludables</h3>
-    <div id="lista-snacks"></div>
+    <div id="menu-completo"></div>
 </div>
 
 <div class="carrito-footer">
@@ -168,7 +164,7 @@
         <span id="monto-total">$0</span>
     </div>
     <button class="btn-enviar" onclick="enviarPedido()">
-        <i class="fab fa-whatsapp"></i> ENVIAR PEDIDO
+        <i class="fab fa-whatsapp"></i> ENVIAR PEDIDO POR WHATSAPP
     </button>
     <div class="derechos">
         APP DESARROLLADA POR <b>VIBRAS POSITIVAS</b> © 2026<br>
@@ -177,104 +173,163 @@
 </div>
 
 <script>
-    const productos = [
-        // BOWL & ENSALADAS
-        { id: 'b1', cat: 'bowls', nombre: 'Bowl de Frutas Especial', precio: 12000 },
-        { id: 'b2', cat: 'bowls', nombre: 'Bowl Pollo & Quinoa', precio: 18000 },
-        { id: 'b3', cat: 'bowls', nombre: 'Ensalada de la Casa', precio: 15000 },
-        // PIZZAS
-        { id: 'p1', cat: 'pizzas', nombre: 'Pizza Integral Vegetariana', precio: 8000 },
-        { id: 'p2', cat: 'pizzas', nombre: 'Pizza Pollo & Champiñones', precio: 9000 },
-        { id: 'p3', cat: 'pizzas', nombre: 'Pizza de Albahaca & Tomate', precio: 8500 },
-        // BEBIDAS
-        { id: 'j1', cat: 'bebidas', nombre: 'Jugo Verde Detox', precio: 6000 },
-        { id: 'j2', cat: 'bebidas', nombre: 'Limonada de Coco', precio: 7500 },
-        { id: 'j3', cat: 'bebidas', nombre: 'Té Hatsu', precio: 7000 },
-        // SNACKS
-        { id: 's1', cat: 'snacks', nombre: 'Galletas de Avena', precio: 4000 },
-        { id: 's2', cat: 'snacks', nombre: 'Mix de Frutos Secos', precio: 5000 }
-    ];
+    const menu = {
+        "Desayunos": [
+            { n: "Desayuno Sencillo", p: 16000, d: "Arepa, quesito, fruta y huevos al gusto, pan tajado" },
+            { n: "Bowl Costeño", p: 24000, d: "Plátano verde, hogao, chicharrón, huevos y queso costeño" },
+            { n: "Huevos Benedectinos", p: 23000, d: "Tostadas, huevo pochados, aguacate, tocineta y holandesa" },
+            { n: "Sanduche de Huevo", p: 16000, d: "Huevos revueltos, queso crema, tocineta y pan de orégano" },
+            { n: "Wafles yogurt/helado", p: 19000, d: "Wafles con frutas y yogurt griego" },
+            { n: "Parfait Disfruta", p: 17000, d: "Yogurt griego, frutas y mermelada" },
+            { n: "Ensalada de frutas", p: 19000, d: "Con yogurt o helado" },
+            { n: "Sándwich gratinado de pollo", p: 20000, d: "Pollo en salsa, mozzarella, parmesano y huevo" },
+            { n: "Avena proteína", p: 25000, d: "Leche almendra, proteína ISO, banano, fresa, arándanos" },
+            { n: "Wafles don queso", p: 18000, d: "Pan de yuca, huevos revueltos, tocineta y fruta" },
+            { n: "Keto", p: 18000, d: "Huevos, tocineta, aguacate, ensalada y zanahoria" },
+            { n: "Desayuno con patacones", p: 19000, d: "Patacones, huevo, chicharrón, queso y hogao" },
+            { n: "Desayuno con calentado", p: 22000, d: "Calentado, huevos, queso, arepa y hogao" },
+            { n: "Arepa carne/pollo desmechado", p: 18000, d: "Con proteína al gusto" }
+        ],
+        "Almuerzos & Platos Fuertes": [
+            { n: "Almuerzo con costichi al barril", p: 28000, d: "Especialidad de la casa" },
+            { n: "Salmón Deleite al ajillo", p: 47000, d: "Con vegetales y papitas/patacones" },
+            { n: "Chuzo de solomito", p: 32000, d: "Carne solomito, papas francesa y ensalada" },
+            { n: "Picadas deleite", p: 50000, d: "Res, pollo, cerdo, chicharrón, chorizo, yuca y más" },
+            { n: "Solomito en salsa champiñones", p: 45000, d: "350g de carne, papitas y ensalada verde" },
+            { n: "Punta de anca al carbón", p: 45000, d: "250g con papas y ensalada" },
+            { n: "Pechuga de pollo 250g", p: 29000, d: "Acompañado de papas francesa y ensalada" },
+            { n: "Ensalada César deleite", p: 25000, d: "Con crotones de pan" },
+            { n: "Ceviche de chicharrón", p: 30000, d: "Chicharrón, cebolla, tomate y plátanos" }
+        ],
+        "Media Tarde | Noche": [
+            { n: "Sanduche de Pollo", p: 20000, d: "Cebolla caramelizada, mozzarella, lechuga y tomate" },
+            { n: "Bowl de Proteína", p: 25000, d: "Batido fresas, 20g proteína, granola y frutas" },
+            { n: "Sanduche Cubano", p: 15000, d: "Salsa ajo, jamón, mozzarella y pan orégano" },
+            { n: "Sanduche cubano ropa vieja bbq", p: 20000, d: "Sabor tradicional BBQ" },
+            { n: "Sanduche de costichi", p: 20000, d: "Costichi, queso asado, encurtida y guacamole" },
+            { n: "Combo mini hamburguesas", p: 25000, d: "3 mini hamburguesas con papitas + jugo" },
+            { n: "Salchipapa Juanjo", p: 14000, d: "Francesa, salchicha, queso rayado y tocineta" }
+        ],
+        "Panadería & Tortas": [
+            { n: "Pan trenza", p: 22000, d: "Orégano, crema de ajo, perejil y cilantro" },
+            { n: "Pan personal de la casa", p: 4000, d: "Sabor surtido diario" },
+            { n: "Torta Arándanos y Almendras", p: 25000, d: "100% Keto, harina almendras, estevia" },
+            { n: "Torta Arándanos y avena", p: 18000, d: "Saludable con harina de avena" },
+            { n: "Torta Chocolate", p: 18000, d: "Con ganache de chocolate" },
+            { n: "Torta Red Velvet", p: 18000, d: "Harina avena/almendras, estevia" },
+            { n: "Torta Naranja", p: 18000, d: "Sabor cítrico natural" },
+            { n: "Torta Banano, queso y bocadillo", p: 15000, d: "Mezcla tradicional" },
+            { n: "Porción de Torta", p: 15000, d: "Elige tu sabor favorito" },
+            { n: "Tabla de Queso Personal", p: 45000, d: "Quesos, jamones, pan y frutas" },
+            { n: "Tabla de Queso Compartir", p: 70000, d: "Para 4 personas" }
+        ],
+        "Bebidas & Café": [
+            { n: "Americano", p: 5000, d: "Café negro tradicional" },
+            { n: "Capuccino", p: 7000, d: "Espumoso y equilibrado" },
+            { n: "Frapuchino", p: 12000, d: "Café frío cremoso" },
+            { n: "Late", p: 8000, d: "Café con leche suave" },
+            { n: "Mocaccino", p: 9000, d: "Café, leche y chocolate" },
+            { n: "Chocolate caliente", p: 9000, d: "Tradicional" },
+            { n: "Milo-chocolate caliente", p: 5000, d: "Sabor clásico" },
+            { n: "Milo frío", p: 10000, d: "Refrescante" },
+            { n: "Limonada Natural", p: 12000, d: "Cítrica" },
+            { n: "Limonada de Coco", p: 12000, d: "Cremosa" },
+            { n: "Limonada de Café", p: 12000, d: "Mezcla única" },
+            { n: "Soda Saborizada", p: 12000, d: "Burbujeante" },
+            { n: "Jugos naturales", p: 8000, d: "Fruta fresca" },
+            { n: "Jugo verde", p: 15000, d: "Detox saludable" },
+            { n: "Smoothie Deleite", p: 12500, d: "Fresa, mora, banano, naranja" },
+            { n: "Smoothie Post Work", p: 15000, d: "Proteína y banano" }
+        ],
+        "Alcohol & Extras": [
+            { n: "Margarita Deleite", p: 18000, d: "Cóctel de la casa" },
+            { n: "Copa de Vino de Corozo", p: 18000, d: "Especialidad regional" },
+            { n: "Entrada de patacones", p: 17000, d: "Queso costeño y hogao" },
+            { n: "Huevo adicional", p: 1500, d: "1 unidad" },
+            { n: "Porción Aguacate", p: 3000, d: "Fresco" },
+            { n: "Dip de queso crema", p: 3000, d: "Para acompañar" }
+        ]
+    };
 
     let carrito = {};
 
-    function renderProductos() {
-        productos.forEach(p => {
-            const div = document.createElement('div');
-            div.className = 'producto';
-            div.innerHTML = `
-                <div><strong>${p.nombre}</strong><br><span>$${p.precio.toLocaleString()}</span></div>
-                <div class="controles">
-                    <button class="btn-qty" onclick="cambiarCantidad('${p.id}', -1, ${p.precio}, '${p.nombre}')">-</button>
-                    <span class="cantidad" id="qty-${p.id}">0</span>
-                    <button class="btn-qty" onclick="cambiarCantidad('${p.id}', 1, ${p.precio}, '${p.nombre}')">+</button>
-                </div>
-            `;
-            document.getElementById(`lista-${p.cat}`).appendChild(div);
-        });
+    function init() {
+        const menuDiv = document.getElementById('menu-completo');
+        for (let cat in menu) {
+            const h3 = document.createElement('h3');
+            h3.innerHTML = `<i class="fas fa-utensils"></i> ${cat}`;
+            menuDiv.appendChild(h3);
+            
+            menu[cat].forEach((p, idx) => {
+                const id = cat.substring(0,2) + idx;
+                const div = document.createElement('div');
+                div.className = 'producto';
+                div.innerHTML = `
+                    <div class="info-prod">
+                        <strong>${p.n}</strong>
+                        <span class="desc-prod">${p.d}</span>
+                        <span style="color:var(--primario); font-weight:bold;">$${p.p.toLocaleString()}</span>
+                    </div>
+                    <div class="controles">
+                        <button class="btn-qty" onclick="cambiarCantidad('${id}', -1, ${p.p}, '${p.n}')">-</button>
+                        <span class="cantidad" id="qty-${id}">0</span>
+                        <button class="btn-qty" onclick="cambiarCantidad('${id}', 1, ${p.p}, '${p.n}')">+</button>
+                    </div>
+                `;
+                menuDiv.appendChild(div);
+            });
+        }
     }
 
-    function cambiarCantidad(id, cambio, precio, nombre) {
-        if (!carrito[id]) carrito[id] = { qty: 0, precio: precio, nombre: nombre };
-        carrito[id].qty += cambio;
-        if (carrito[id].qty < 0) carrito[id].qty = 0;
-        document.getElementById(`qty-${id}`).innerText = carrito[id].qty;
-        actualizarTotal();
+    function cambiarCantidad(id, c, p, n) {
+        if (!carrito[id]) carrito[id] = { q: 0, p: p, n: n };
+        carrito[id].q += c;
+        if (carrito[id].q < 0) carrito[id].q = 0;
+        document.getElementById(`qty-${id}`).innerText = carrito[id].q;
+        updateTotal();
     }
 
-    function actualizarTotal() {
-        let total = 0;
-        for (let id in carrito) total += carrito[id].qty * carrito[id].precio;
-        document.getElementById('monto-total').innerText = `$${total.toLocaleString('es-CO')}`;
+    function updateTotal() {
+        let t = 0;
+        for (let i in carrito) t += carrito[i].q * carrito[i].p;
+        document.getElementById('monto-total').innerText = `$${t.toLocaleString('es-CO')}`;
     }
 
     function actualizarReloj() {
-        const opciones = { timeZone: 'America/Bogota', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
-        document.getElementById('reloj-colombia').innerHTML = `HORA COLOMBIA: ${new Date().toLocaleTimeString('es-CO', opciones)}`;
+        const opt = { timeZone: 'America/Bogota', hour: '2-digit', minute: '2-digit', hour12: true };
+        document.getElementById('reloj-colombia').innerHTML = `<i class="far fa-clock"></i> COLOMBIA: ${new Date().toLocaleTimeString('es-CO', opt)}`;
     }
-    setInterval(actualizarReloj, 1000);
-    actualizarReloj();
+    setInterval(actualizarReloj, 1000); actualizarReloj();
 
     function enviarPedido() {
-        const nombre = document.getElementById('nombre').value;
+        const nom = document.getElementById('nombre').value;
         const dir = document.getElementById('direccion').value;
         const tel = document.getElementById('telefono').value;
         const obs = document.getElementById('observaciones').value;
 
-        if (!nombre || !dir || !tel) return alert("⚠️ Por favor completa tus datos.");
+        if (!nom || !dir || !tel) return alert("⚠️ Completa los datos de entrega.");
         
-        let subtotal = 0;
-        let lista = "";
-        for (let id in carrito) {
-            if (carrito[id].qty > 0) {
-                let s = carrito[id].qty * carrito[id].precio;
-                subtotal += s;
-                lista += `✅ *${carrito[id].qty}x* ${carrito[id].nombre} ($${s.toLocaleString()})\n`;
+        let t = 0, l = "";
+        for (let i in carrito) {
+            if (carrito[i].q > 0) {
+                let sub = carrito[i].q * carrito[i].p;
+                t += sub;
+                l += `✅ *${carrito[i].q}x* ${carrito[i].n} ($${sub.toLocaleString()})\n`;
             }
         }
-
-        if (subtotal === 0) return alert("⚠️ Agrega productos al carrito.");
+        if (t === 0) return alert("⚠️ El carrito está vacío.");
 
         const h = new Date().toLocaleTimeString('es-CO', { timeZone: 'America/Bogota', hour12: true });
-
-        let msg = `🧾 *NUEVO PEDIDO - DÈLEITE*\n`;
-        msg += `----------------------------------\n`;
-        msg += `👤 *Cliente:* ${nombre}\n`;
-        msg += `📍 *Dirección:* ${dir}\n`;
-        msg += `📞 *Teléfono:* ${tel}\n`;
-        msg += `⏰ *Hora:* ${h}\n`;
-        msg += `----------------------------------\n\n`;
-        msg += lista;
-        msg += `\n📝 *Notas:* ${obs || "Ninguna"}\n`;
-        msg += `----------------------------------\n`;
-        msg += `💰 *TOTAL A PAGAR: $${subtotal.toLocaleString()}*\n`;
-        msg += `----------------------------------\n\n`;
-        msg += `_Desarrollado por Vibras Positivas ©_`;
+        let msg = `🧾 *ORDEN DÈLEITE SALUDABLE*\n`;
+        msg += `👤 *Cliente:* ${nom}\n📍 *Dir:* ${dir}\n📞 *Tel:* ${tel}\n⏰ *Hora:* ${h}\n`;
+        msg += `----------------------------------\n${l}`;
+        msg += `----------------------------------\n📝 *Notas:* ${obs || "Ninguna"}\n`;
+        msg += `💰 *TOTAL: $${t.toLocaleString()}*\n\n`;
+        msg += `_App desarrollada por Vibras Positivas ©_`;
 
         window.open(`https://wa.me/573214914775?text=${encodeURIComponent(msg)}`, '_blank');
     }
-
-    renderProductos();
+    init();
 </script>
-
 </body>
 </html>
