@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dèleite Saludable - Pedidos</title>
+    <title>Dèleite Saludable - App Pedidos</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -19,7 +19,7 @@
             background-color: var(--fondo);
             color: var(--texto);
             margin: 0;
-            padding-bottom: 160px; /* Espacio para el carrito flotante */
+            padding-bottom: 220px;
         }
 
         header {
@@ -33,7 +33,31 @@
 
         .container { padding: 15px; max-width: 600px; margin: auto; }
 
-        h3 { border-bottom: 2px solid var(--secundario); padding-bottom: 5px; margin-top: 25px; color: var(--primario); }
+        .form-cliente {
+            background: #fff;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+        }
+
+        .form-cliente input, .form-cliente textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+
+        h3 { 
+            background: var(--primario); 
+            color: white; 
+            padding: 10px 15px; 
+            border-radius: 10px;
+            margin-top: 30px;
+            font-size: 1.1rem;
+        }
 
         .producto {
             background: white;
@@ -49,20 +73,18 @@
         .controles { display: flex; align-items: center; gap: 12px; }
 
         .btn-qty {
-            background: var(--primario);
+            background: var(--secundario);
             color: white;
             border: none;
             width: 35px;
             height: 35px;
-            border-radius: 8px;
+            border-radius: 50%;
             font-weight: bold;
             cursor: pointer;
-            font-size: 1.2rem;
         }
 
-        .cantidad { font-weight: bold; min-width: 25px; text-align: center; font-size: 1.1rem; }
+        .cantidad { font-weight: bold; min-width: 25px; text-align: center; }
 
-        /* Carrito Flotante */
         .carrito-footer {
             position: fixed;
             bottom: 0;
@@ -84,7 +106,6 @@
             font-size: 1.4rem;
             font-weight: bold;
             margin-bottom: 15px;
-            color: var(--texto);
         }
 
         .btn-enviar {
@@ -101,18 +122,13 @@
             justify-content: center;
             align-items: center;
             gap: 10px;
-            transition: 0.2s;
-            text-transform: uppercase;
         }
-
-        .btn-enviar:active { transform: scale(0.96); }
 
         .derechos {
             text-align: center;
             font-size: 0.7rem;
             margin-top: 15px;
             color: #aaa;
-            letter-spacing: 0.5px;
         }
     </style>
 </head>
@@ -120,58 +136,39 @@
 
 <header>
     <img src="deleite-saludable.PNG" alt="Logo Dèleite" class="logo">
-    <h2 style="margin:10px 0 2px 0;">Dèleite Saludable</h2>
-    <div id="reloj-colombia" style="font-size: 0.8rem; color: #888; font-weight: bold;"></div>
+    <h2 style="margin:5px 0 0 0;">Dèleite Saludable</h2>
+    <small>Caucasia, Antioquia | 321 491 4775</small>
+    <div id="reloj-colombia" style="font-size: 0.8rem; font-weight: bold; margin-top: 5px; color: var(--primario);"></div>
 </header>
 
 <div class="container">
-    <h3>Menú Saludable</h3>
-    <div id="lista-productos">
-        <div class="producto">
-            <div>
-                <strong>Pizza Saludable Integral</strong><br>
-                <span>$8.000</span>
-            </div>
-            <div class="controles">
-                <button class="btn-qty" onclick="cambiarCantidad('piz', -1, 8000, 'Pizza Saludable Integral')">-</button>
-                <span class="cantidad" id="qty-piz">0</span>
-                <button class="btn-qty" onclick="cambiarCantidad('piz', 1, 8000, 'Pizza Saludable Integral')">+</button>
-            </div>
-        </div>
-
-        <div class="producto">
-            <div>
-                <strong>Bowl de Frutas Especial</strong><br>
-                <span>$12.000</span>
-            </div>
-            <div class="controles">
-                <button class="btn-qty" onclick="cambiarCantidad('bw', -1, 12000, 'Bowl de Frutas')">-</button>
-                <span class="cantidad" id="qty-bw">0</span>
-                <button class="btn-qty" onclick="cambiarCantidad('bw', 1, 12000, 'Bowl de Frutas')">+</button>
-            </div>
-        </div>
-
-        <div class="producto">
-            <div>
-                <strong>Jugo Natural 16oz</strong><br>
-                <span>$5.000</span>
-            </div>
-            <div class="controles">
-                <button class="btn-qty" onclick="cambiarCantidad('jg', -1, 5000, 'Jugo Natural')">-</button>
-                <span class="cantidad" id="qty-jg">0</span>
-                <button class="btn-qty" onclick="cambiarCantidad('jg', 1, 5000, 'Jugo Natural')">+</button>
-            </div>
-        </div>
+    <div class="form-cliente">
+        <input type="text" id="nombre" placeholder="Nombre completo">
+        <input type="text" id="direccion" placeholder="Dirección de entrega">
+        <input type="tel" id="telefono" placeholder="Celular de contacto">
+        <textarea id="observaciones" rows="2" placeholder="Notas adicionales (Ej: sin cebolla, apto para diabéticos...)"></textarea>
     </div>
+
+    <h3>🥗 Bowl & Ensaladas</h3>
+    <div id="lista-bowls"></div>
+
+    <h3>🍕 Pizzas Integrales</h3>
+    <div id="lista-pizzas"></div>
+
+    <h3>🥤 Bebidas Naturales</h3>
+    <div id="lista-bebidas"></div>
+
+    <h3>🍪 Snacks Saludables</h3>
+    <div id="lista-snacks"></div>
 </div>
 
 <div class="carrito-footer">
     <div class="total-fila">
-        <span>Total a Pagar:</span>
+        <span>Total:</span>
         <span id="monto-total">$0</span>
     </div>
     <button class="btn-enviar" onclick="enviarPedido()">
-        <i class="fab fa-whatsapp"></i> Enviar Pedido
+        <i class="fab fa-whatsapp"></i> ENVIAR PEDIDO
     </button>
     <div class="derechos">
         APP DESARROLLADA POR <b>VIBRAS POSITIVAS</b> © 2026<br>
@@ -180,22 +177,44 @@
 </div>
 
 <script>
-    let carrito = {};
-    let totalGeneral = 0;
+    const productos = [
+        // BOWL & ENSALADAS
+        { id: 'b1', cat: 'bowls', nombre: 'Bowl de Frutas Especial', precio: 12000 },
+        { id: 'b2', cat: 'bowls', nombre: 'Bowl Pollo & Quinoa', precio: 18000 },
+        { id: 'b3', cat: 'bowls', nombre: 'Ensalada de la Casa', precio: 15000 },
+        // PIZZAS
+        { id: 'p1', cat: 'pizzas', nombre: 'Pizza Integral Vegetariana', precio: 8000 },
+        { id: 'p2', cat: 'pizzas', nombre: 'Pizza Pollo & Champiñones', precio: 9000 },
+        { id: 'p3', cat: 'pizzas', nombre: 'Pizza de Albahaca & Tomate', precio: 8500 },
+        // BEBIDAS
+        { id: 'j1', cat: 'bebidas', nombre: 'Jugo Verde Detox', precio: 6000 },
+        { id: 'j2', cat: 'bebidas', nombre: 'Limonada de Coco', precio: 7500 },
+        { id: 'j3', cat: 'bebidas', nombre: 'Té Hatsu', precio: 7000 },
+        // SNACKS
+        { id: 's1', cat: 'snacks', nombre: 'Galletas de Avena', precio: 4000 },
+        { id: 's2', cat: 'snacks', nombre: 'Mix de Frutos Secos', precio: 5000 }
+    ];
 
-    // Reloj con hora real de Colombia
-    function actualizarReloj() {
-        const opciones = { timeZone: 'America/Bogota', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
-        const ahora = new Date().toLocaleTimeString('es-CO', opciones);
-        document.getElementById('reloj-colombia').innerHTML = `<i class="far fa-clock"></i> COLOMBIA: ${ahora}`;
+    let carrito = {};
+
+    function renderProductos() {
+        productos.forEach(p => {
+            const div = document.createElement('div');
+            div.className = 'producto';
+            div.innerHTML = `
+                <div><strong>${p.nombre}</strong><br><span>$${p.precio.toLocaleString()}</span></div>
+                <div class="controles">
+                    <button class="btn-qty" onclick="cambiarCantidad('${p.id}', -1, ${p.precio}, '${p.nombre}')">-</button>
+                    <span class="cantidad" id="qty-${p.id}">0</span>
+                    <button class="btn-qty" onclick="cambiarCantidad('${p.id}', 1, ${p.precio}, '${p.nombre}')">+</button>
+                </div>
+            `;
+            document.getElementById(`lista-${p.cat}`).appendChild(div);
+        });
     }
-    setInterval(actualizarReloj, 1000);
-    actualizarReloj();
 
     function cambiarCantidad(id, cambio, precio, nombre) {
-        if (!carrito[id]) {
-            carrito[id] = { qty: 0, precio: precio, nombre: nombre };
-        }
+        if (!carrito[id]) carrito[id] = { qty: 0, precio: precio, nombre: nombre };
         carrito[id].qty += cambio;
         if (carrito[id].qty < 0) carrito[id].qty = 0;
         document.getElementById(`qty-${id}`).innerText = carrito[id].qty;
@@ -203,48 +222,58 @@
     }
 
     function actualizarTotal() {
-        totalGeneral = 0;
-        for (let id in carrito) {
-            totalGeneral += carrito[id].qty * carrito[id].precio;
-        }
-        document.getElementById('monto-total').innerText = `$${totalGeneral.toLocaleString('es-CO')}`;
+        let total = 0;
+        for (let id in carrito) total += carrito[id].qty * carrito[id].precio;
+        document.getElementById('monto-total').innerText = `$${total.toLocaleString('es-CO')}`;
     }
 
+    function actualizarReloj() {
+        const opciones = { timeZone: 'America/Bogota', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+        document.getElementById('reloj-colombia').innerHTML = `HORA COLOMBIA: ${new Date().toLocaleTimeString('es-CO', opciones)}`;
+    }
+    setInterval(actualizarReloj, 1000);
+    actualizarReloj();
+
     function enviarPedido() {
-        if (totalGeneral === 0) {
-            alert("⚠️ El carrito está vacío. Agrega algunos productos.");
-            return;
-        }
+        const nombre = document.getElementById('nombre').value;
+        const dir = document.getElementById('direccion').value;
+        const tel = document.getElementById('telefono').value;
+        const obs = document.getElementById('observaciones').value;
 
-        const ahora = new Date();
-        const f = ahora.toLocaleDateString('es-CO', { timeZone: 'America/Bogota' });
-        const h = ahora.toLocaleTimeString('es-CO', { timeZone: 'America/Bogota', hour12: true });
-
-        let msg = "🧾 *NUEVO PEDIDO - DÈLEITE SALUDABLE*\n";
-        msg += "----------------------------------\n";
-        msg += `📅 *Fecha:* ${f}\n`;
-        msg += `⏰ *Hora:* ${h}\n`;
-        msg += "----------------------------------\n\n";
-
+        if (!nombre || !dir || !tel) return alert("⚠️ Por favor completa tus datos.");
+        
+        let subtotal = 0;
+        let lista = "";
         for (let id in carrito) {
             if (carrito[id].qty > 0) {
-                let sub = carrito[id].qty * carrito[id].precio;
-                msg += `🔸 *${carrito[id].qty}x* ${carrito[id].nombre}\n`;
-                msg += `   Subtotal: $${sub.toLocaleString('es-CO')}\n\n`;
+                let s = carrito[id].qty * carrito[id].precio;
+                subtotal += s;
+                lista += `✅ *${carrito[id].qty}x* ${carrito[id].nombre} ($${s.toLocaleString()})\n`;
             }
         }
 
-        msg += "----------------------------------\n";
-        msg += `💰 *TOTAL FINAL: $${totalGeneral.toLocaleString('es-CO')}*\n`;
-        msg += "----------------------------------\n\n";
-        msg += "📍 *Ciudad:* Caucasia, Antioquia\n";
-        msg += "_App desarrollada por Vibras Positivas ©_";
+        if (subtotal === 0) return alert("⚠️ Agrega productos al carrito.");
 
-        // EL CELULAR CORRECTO: 3214914775
-        const tel = "573214914775"; 
-        const link = `https://wa.me/${tel}?text=${encodeURIComponent(msg)}`;
-        window.open(link, '_blank');
+        const h = new Date().toLocaleTimeString('es-CO', { timeZone: 'America/Bogota', hour12: true });
+
+        let msg = `🧾 *NUEVO PEDIDO - DÈLEITE*\n`;
+        msg += `----------------------------------\n`;
+        msg += `👤 *Cliente:* ${nombre}\n`;
+        msg += `📍 *Dirección:* ${dir}\n`;
+        msg += `📞 *Teléfono:* ${tel}\n`;
+        msg += `⏰ *Hora:* ${h}\n`;
+        msg += `----------------------------------\n\n`;
+        msg += lista;
+        msg += `\n📝 *Notas:* ${obs || "Ninguna"}\n`;
+        msg += `----------------------------------\n`;
+        msg += `💰 *TOTAL A PAGAR: $${subtotal.toLocaleString()}*\n`;
+        msg += `----------------------------------\n\n`;
+        msg += `_Desarrollado por Vibras Positivas ©_`;
+
+        window.open(`https://wa.me/573214914775?text=${encodeURIComponent(msg)}`, '_blank');
     }
+
+    renderProductos();
 </script>
 
 </body>
