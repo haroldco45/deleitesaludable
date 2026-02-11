@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dèleite Saludable - App</title>
+    <title>Dèleite Saludable - Pedidos</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primario: #bc7c4c; /* Tono café del logo */
-            --secundario: #f4a261; /* Naranja suave */
+            --primario: #bc7c4c;
+            --secundario: #f4a261;
             --fondo: #fdfaf5;
             --texto: #4a3f35;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             background-color: var(--fondo);
             color: var(--texto);
             margin: 0;
-            padding-bottom: 80px;
+            padding-bottom: 120px;
         }
 
         header {
@@ -28,21 +28,13 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        .logo { width: 100px; border-radius: 50%; }
+        .logo { width: 80px; border-radius: 50%; }
 
         .container { padding: 15px; max-width: 600px; margin: auto; }
 
-        /* Tarjeta de Suscripción */
-        .sub-card {
-            background: linear-gradient(135deg, var(--primario), var(--secundario));
-            color: white;
-            padding: 15px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
+        h3 { border-bottom: 2px solid var(--secundario); padding-bottom: 5px; }
 
-        /* Menú de Productos */
+        /* Estilo de Productos */
         .producto {
             background: white;
             display: flex;
@@ -54,31 +46,68 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
-        .btn-add {
+        .controles {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-qty {
             background: var(--primario);
             color: white;
             border: none;
-            padding: 8px 15px;
-            border-radius: 20px;
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            font-weight: bold;
             cursor: pointer;
         }
 
-        /* Barra de Navegación Inferior */
-        .nav-bottom {
+        .cantidad { font-weight: bold; min-width: 20px; text-align: center; }
+
+        /* Carrito Flotante */
+        .carrito-footer {
             position: fixed;
             bottom: 0;
             width: 100%;
             background: white;
-            display: flex;
-            justify-content: space-around;
-            padding: 15px 0;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+            border-radius: 20px 20px 0 0;
+            box-sizing: border-box;
+            max-width: 600px;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
-        footer {
+        .total-fila {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .btn-enviar {
+            background: #25d366;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .derechos {
             text-align: center;
-            font-size: 0.8rem;
-            padding: 20px;
+            font-size: 0.7rem;
+            margin-top: 10px;
             color: #888;
         }
     </style>
@@ -87,63 +116,114 @@
 
 <header>
     <img src="deleite-saludable.PNG" alt="Logo Dèleite" class="logo">
-    <h1>Dèleite Saludable</h1>
-    <p><i class="fas fa-map-marker-alt"></i> Caucasia, Antioquia</p>
+    <h2 style="margin:10px 0 0 0;">Dèleite Saludable</h2>
+    <small>Alimentación Consciente - Caucasia</small>
 </header>
 
 <div class="container">
-    <div class="sub-card">
-        <h3><i class="fas fa-crown"></i> Mi Suscripción</h3>
-        <p id="status-pago">Verificando estado...</p>
-        <small id="fecha-vencimiento">Vence: 15 de Marzo, 2026</small>
-    </div>
-
-    <h3>Nuestro Menú</h3>
-    <div id="menu-lista">
+    <h3>Nuestra Carta</h3>
+    <div id="lista-productos">
         <div class="producto">
             <div>
-                <strong>Pizza Saludable Integral</strong><br>
+                <strong>Pizza Saludable</strong><br>
                 <span>$8.000</span>
             </div>
-            <button class="btn-add" onclick="pedir('Pizza Integral')">Pedir</button>
+            <div class="controles">
+                <button class="btn-qty" onclick="cambiarCantidad('pizza', -1, 8000, 'Pizza Saludable')">-</button>
+                <span class="cantidad" id="qty-pizza">0</span>
+                <button class="btn-qty" onclick="cambiarCantidad('pizza', 1, 8000, 'Pizza Saludable')">+</button>
+            </div>
         </div>
+
         <div class="producto">
             <div>
-                <strong>Bowl de Frutas</strong><br>
+                <strong>Bowl Fit</strong><br>
                 <span>$12.000</span>
             </div>
-            <button class="btn-add" onclick="pedir('Bowl de Frutas')">Pedir</button>
+            <div class="controles">
+                <button class="btn-qty" onclick="cambiarCantidad('bowl', -1, 12000, 'Bowl Fit')">-</button>
+                <span class="cantidad" id="qty-bowl">0</span>
+                <button class="btn-qty" onclick="cambiarCantidad('bowl', 1, 12000, 'Bowl Fit')">+</button>
+            </div>
+        </div>
+
+        <div class="producto">
+            <div>
+                <strong>Jugo Natural</strong><br>
+                <span>$5.000</span>
+            </div>
+            <div class="controles">
+                <button class="btn-qty" onclick="cambiarCantidad('jugo', -1, 5000, 'Jugo Natural')">-</button>
+                <span class="cantidad" id="qty-jugo">0</span>
+                <button class="btn-qty" onclick="cambiarCantidad('jugo', 1, 5000, 'Jugo Natural')">+</button>
+            </div>
         </div>
     </div>
 </div>
 
-<footer>
-    <p>App desarrollada por Vibras Positivas © <br> Derechos de Autor 2026</p>
-</footer>
-
-<div class="nav-bottom">
-    <i class="fas fa-home" onclick="location.reload()"></i>
-    <i class="fas fa-utensils"></i>
-    <i class="fab fa-whatsapp" onclick="window.open('https://wa.me/3226438714')"></i>
-    <i class="fas fa-user"></i>
+<div class="carrito-footer">
+    <div class="total-fila">
+        <span>Total a Pagar:</span>
+        <span id="monto-total">$0</span>
+    </div>
+    <button class="btn-enviar" onclick="enviarPedido()">
+        <i class="fab fa-whatsapp"></i> ENVIAR PEDIDO
+    </button>
+    <div class="derechos">
+        App desarrollada por <strong>Vibras Positivas</strong> © Derechos de Autor 2026
+    </div>
 </div>
 
 <script>
-    // Lógica para verificar vencimiento
-    const fechaVencimiento = new Date('2026-03-15');
-    const hoy = new Date();
-    const statusEl = document.getElementById('status-pago');
+    let carrito = {};
+    let totalGeneral = 0;
 
-    if (hoy > fechaVencimiento) {
-        statusEl.innerHTML = "⚠️ Suscripción Vencida";
-        statusEl.style.color = "#ff4d4d";
-    } else {
-        statusEl.innerHTML = "✅ Suscripción Activa";
+    function cambiarCantidad(id, cambio, precio, nombre) {
+        if (!carrito[id]) {
+            carrito[id] = { qty: 0, precio: precio, nombre: nombre };
+        }
+
+        carrito[id].qty += cambio;
+
+        if (carrito[id].qty < 0) carrito[id].qty = 0;
+
+        // Actualizar número en pantalla
+        document.getElementById(`qty-${id}`).innerText = carrito[id].qty;
+
+        actualizarTotal();
     }
 
-    function pedir(producto) {
-        const mensaje = `Hola Dèleite, quisiera pedir: ${producto}`;
-        const url = `https://wa.me/573214914775?text=${encodeURIComponent(mensaje)}`;
+    function actualizarTotal() {
+        totalGeneral = 0;
+        for (let id in carrito) {
+            totalGeneral += carrito[id].qty * carrito[id].precio;
+        }
+        document.getElementById('monto-total').innerText = `$${totalGeneral.toLocaleString()}`;
+    }
+
+    function enviarPedido() {
+        if (totalGeneral === 0) {
+            alert("Por favor, añade al menos un producto.");
+            return;
+        }
+
+        let mensaje = "🧾 *FACTURA DE PEDIDO - DÈLEITE*\n";
+        mensaje += "----------------------------------\n";
+
+        for (let id in carrito) {
+            if (carrito[id].qty > 0) {
+                let subtotal = carrito[id].qty * carrito[id].precio;
+                mensaje += `• ${carrito[id].nombre}\n`;
+                mensaje += `  ${carrito[id].qty} x $${carrito[id].precio.toLocaleString()} = *$${subtotal.toLocaleString()}*\n`;
+            }
+        }
+
+        mensaje += "----------------------------------\n";
+        mensaje += `*TOTAL A PAGAR: $${totalGeneral.toLocaleString()}*\n\n`;
+        mensaje += "📍 Ubicación: Caucasia\n";
+        mensaje += "_Enviado desde Dèleite App_";
+
+        const url = `https://wa.me/3226438714?text=${encodeURIComponent(mensaje)}`;
         window.open(url, '_blank');
     }
 </script>
