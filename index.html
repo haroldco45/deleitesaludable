@@ -3,333 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dèleite Saludable - App de Pedidos</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Deleite Saludable - Pedidos</title>
     <style>
-        :root {
-            --primario: #bc7c4c;
-            --secundario: #f4a261;
-            --fondo: #fdfaf5;
-            --texto: #4a3f35;
-            --whatsapp: #25d366;
-        }
-
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: var(--fondo);
-            color: var(--texto);
-            margin: 0;
-            padding-bottom: 240px;
-        }
-
-        header {
-            background: white;
-            text-align: center;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .logo { width: 80px; border-radius: 50%; }
-
-        .container { padding: 15px; max-width: 600px; margin: auto; }
-
-        .form-cliente {
-            background: #fff;
-            padding: 15px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            border: 1px solid #eee;
-        }
-
-        .form-cliente input, .form-cliente textarea {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            box-sizing: border-box;
-        }
-
-        h3 { 
-            background: var(--primario); 
-            color: white; 
-            padding: 12px 15px; 
-            border-radius: 10px;
-            margin-top: 30px;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .producto {
-            background: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .info-prod { max-width: 65%; }
-        .desc-prod { font-size: 0.75rem; color: #777; display: block; margin-top: 4px; }
-
-        .controles { display: flex; align-items: center; gap: 10px; }
-
-        .btn-qty {
-            background: var(--secundario);
-            color: white;
-            border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .cantidad { font-weight: bold; min-width: 20px; text-align: center; }
-
-        .carrito-footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background: white;
-            padding: 20px;
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.15);
-            border-radius: 25px 25px 0 0;
-            box-sizing: border-box;
-            max-width: 600px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-        }
-
-        .total-fila {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.4rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .btn-enviar {
-            background: var(--whatsapp);
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 18px;
-            border-radius: 15px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .derechos {
-            text-align: center;
-            font-size: 0.7rem;
-            margin-top: 15px;
-            color: #aaa;
-        }
+        :root { --primario: #FFD700; --secundario: #000000; --blanco: #ffffff; --gris-claro: #f4f4f4; --exito: #25D366; }
+        body { font-family: 'Arial', sans-serif; background-color: var(--gris-claro); margin: 0; padding: 15px; }
+        .card { max-width: 500px; margin: auto; background: var(--blanco); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #ddd; }
+        header { background: var(--secundario); color: var(--primario); padding: 25px; text-align: center; border-bottom: 4px solid var(--primario); }
+        .logo-area { font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; }
+        .content { padding: 20px; }
+        .section-title { font-size: 14px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid var(--primario); display: inline-block; }
+        
+        /* Sección destacada para marcas de Distrileco */
+        .marca-propia { background: #fff9db; border: 2px dashed var(--primario); padding: 12px; border-radius: 10px; margin-bottom: 20px; }
+        
+        input, select, textarea { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ccc; border-radius: 10px; font-size: 16px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; margin: 10px 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-gold { background: var(--primario); color: var(--secundario); }
+        .btn-whatsapp { background: var(--exito); color: white; }
+        .hidden { display: none !important; }
+        footer { text-align: center; padding: 20px; font-size: 12px; color: #888; background: #fff; border-top: 1px solid #eee; }
+        .vp-brand { color: var(--secundario); font-weight: bold; text-decoration: none; border-bottom: 1px solid var(--primario); }
     </style>
 </head>
 <body>
+<div class="card">
+    <header>
+        <div class="logo-area">DELEITE SALUDABLE</div>
+        <div style="font-size: 11px; color: white; margin-top: 5px; letter-spacing: 1px;">TU MERCADO SANO Y RÁPIDO</div>
+    </header>
+    
+    <div class="content">
+        <div id="bloque-cliente">
+            <div class="section-title">Datos de Envío</div>
+            <div id="cliente-editor">
+                <input type="text" id="c_nombre" placeholder="¿A nombre de quién?">
+                <input type="text" id="c_direccion" placeholder="Dirección exacta en Caucasia">
+                <input type="tel" id="c_celular" placeholder="Número de contacto">
+                <button class="btn btn-gold" onclick="guardarCliente()">GUARDAR MIS DATOS</button>
+            </div>
+            <div id="cliente-info-guardada" class="hidden">
+                <p id="texto-resumen" style="font-size: 14px; color: #333; background: #fffdf2; padding: 15px; border-radius: 10px; border-left: 5px solid var(--primario); white-space: pre-wrap;"></p>
+                <button onclick="mostrarEditor()" style="font-size: 11px; background: none; border: none; color: #007bff; cursor: pointer;">✏️ Editar dirección</button>
+            </div>
+        </div>
 
-<header>
-    <img src="deleite-saludable.PNG" alt="Logo Dèleite" class="logo">
-    <h2 style="margin:5px 0 0 0;">Dèleite Saludable</h2>
-    <small>Caucasia, Antioquia | Pedidos: 321 491 4775</small>
-    <div id="reloj-colombia" style="font-size: 0.8rem; font-weight: bold; margin-top: 5px; color: var(--primario);"></div>
-</header>
+        <hr style="opacity: 0.1; margin: 25px 0;">
 
-<div class="container">
-    <div class="form-cliente">
-        <input type="text" id="nombre" placeholder="Nombre completo">
-        <input type="text" id="direccion" placeholder="Dirección de entrega">
-        <input type="tel" id="telefono" placeholder="Celular de contacto">
-        <textarea id="observaciones" rows="2" placeholder="Notas adicionales o cambios en el pedido..."></textarea>
+        <div class="marca-propia">
+            <div class="section-title" style="color: #b8860b;">🌾 Esenciales Distrileco</div>
+            <select id="producto_distrileco">
+                <option value="">¿Deseas agregar Superarroz?</option>
+                <option value="Superarroz - Bulto">Superarroz (Bulto)</option>
+                <option value="Superarroz - Arroba">Superarroz (Arroba)</option>
+                <option value="Vistahermosa - Arroba">Arroz Vistahermosa (Arroba)</option>
+            </select>
+        </div>
+
+        <div class="section-title">Tu Pedido Saludable</div>
+        <textarea id="lista_pedido" rows="4" placeholder="Escribe aquí los productos que necesitas..."></textarea>
+        
+        <textarea id="observaciones" rows="2" placeholder="Notas adicionales para el domiciliario..."></textarea>
+
+        <button class="btn btn-whatsapp" onclick="activarGPS()">
+            <span>🛰️ ENVIAR PEDIDO CON MAPA</span>
+        </button>
     </div>
 
-    <div id="menu-completo"></div>
-</div>
-
-<div class="carrito-footer">
-    <div class="total-fila">
-        <span>Total:</span>
-        <span id="monto-total">$0</span>
-    </div>
-    <button class="btn-enviar" onclick="enviarPedido()">
-        <i class="fab fa-whatsapp"></i> ENVIAR PEDIDO POR WHATSAPP
-    </button>
-    <div class="derechos">
-        APP DESARROLLADA POR <b>VIBRAS POSITIVAS</b> © 2026<br>
-        DERECHOS DE AUTOR RESERVADOS
-    </div>
+    <footer>
+        Infraestructura Digital <br>
+        <a href="#" class="vp-brand">VIBRAS POSITIVAS</a> <br>
+        Caucasia, Antioquia © 2026
+    </footer>
 </div>
 
 <script>
-    const menu = {
-        "Desayunos": [
-            { n: "Desayuno Sencillo", p: 16000, d: "Arepa, quesito, fruta y huevos al gusto, pan tajado" },
-            { n: "Bowl Costeño", p: 24000, d: "Plátano verde, hogao, chicharrón, huevos y queso costeño" },
-            { n: "Huevos Benedectinos", p: 23000, d: "Tostadas, huevo pochados, aguacate, tocineta y holandesa" },
-            { n: "Sanduche de Huevo", p: 16000, d: "Huevos revueltos, queso crema, tocineta y pan de orégano" },
-            { n: "Wafles yogurt/helado", p: 19000, d: "Wafles con frutas y yogurt griego" },
-            { n: "Parfait Disfruta", p: 17000, d: "Yogurt griego, frutas y mermelada" },
-            { n: "Ensalada de frutas", p: 19000, d: "Con yogurt o helado" },
-            { n: "Sándwich gratinado de pollo", p: 20000, d: "Pollo en salsa, mozzarella, parmesano y huevo" },
-            { n: "Avena proteína", p: 25000, d: "Leche almendra, proteína ISO, banano, fresa, arándanos" },
-            { n: "Wafles don queso", p: 18000, d: "Pan de yuca, huevos revueltos, tocineta y fruta" },
-            { n: "Keto", p: 18000, d: "Huevos, tocineta, aguacate, ensalada y zanahoria" },
-            { n: "Desayuno con patacones", p: 19000, d: "Patacones, huevo, chicharrón, queso y hogao" },
-            { n: "Desayuno con calentado", p: 22000, d: "Calentado, huevos, queso, arepa y hogao" },
-            { n: "Arepa carne/pollo desmechado", p: 18000, d: "Con proteína al gusto" }
-        ],
-        "Almuerzos & Platos Fuertes": [
-            { n: "Almuerzo con costichi al barril", p: 28000, d: "Especialidad de la casa" },
-            { n: "Salmón Deleite al ajillo", p: 47000, d: "Con vegetales y papitas/patacones" },
-            { n: "Chuzo de solomito", p: 32000, d: "Carne solomito, papas francesa y ensalada" },
-            { n: "Picadas deleite", p: 50000, d: "Res, pollo, cerdo, chicharrón, chorizo, yuca y más" },
-            { n: "Solomito en salsa champiñones", p: 45000, d: "350g de carne, papitas y ensalada verde" },
-            { n: "Punta de anca al carbón", p: 45000, d: "250g con papas y ensalada" },
-            { n: "Pechuga de pollo 250g", p: 29000, d: "Acompañado de papas francesa y ensalada" },
-            { n: "Ensalada César deleite", p: 25000, d: "Con crotones de pan" },
-            { n: "Ceviche de chicharrón", p: 30000, d: "Chicharrón, cebolla, tomate y plátanos" }
-        ],
-        "Media Tarde | Noche": [
-            { n: "Sanduche de Pollo", p: 20000, d: "Cebolla caramelizada, mozzarella, lechuga y tomate" },
-            { n: "Bowl de Proteína", p: 25000, d: "Batido fresas, 20g proteína, granola y frutas" },
-            { n: "Sanduche Cubano", p: 15000, d: "Salsa ajo, jamón, mozzarella y pan orégano" },
-            { n: "Sanduche cubano ropa vieja bbq", p: 20000, d: "Sabor tradicional BBQ" },
-            { n: "Sanduche de costichi", p: 20000, d: "Costichi, queso asado, encurtida y guacamole" },
-            { n: "Combo mini hamburguesas", p: 25000, d: "3 mini hamburguesas con papitas + jugo" },
-            { n: "Salchipapa Juanjo", p: 14000, d: "Francesa, salchicha, queso rayado y tocineta" }
-        ],
-        "Panadería & Tortas": [
-            { n: "Pan trenza", p: 22000, d: "Orégano, crema de ajo, perejil y cilantro" },
-            { n: "Pan personal de la casa", p: 4000, d: "Sabor surtido diario" },
-            { n: "Torta Arándanos y Almendras", p: 25000, d: "100% Keto, harina almendras, estevia" },
-            { n: "Torta Arándanos y avena", p: 18000, d: "Saludable con harina de avena" },
-            { n: "Torta Chocolate", p: 18000, d: "Con ganache de chocolate" },
-            { n: "Torta Red Velvet", p: 18000, d: "Harina avena/almendras, estevia" },
-            { n: "Torta Naranja", p: 18000, d: "Sabor cítrico natural" },
-            { n: "Torta Banano, queso y bocadillo", p: 15000, d: "Mezcla tradicional" },
-            { n: "Porción de Torta", p: 15000, d: "Elige tu sabor favorito" },
-            { n: "Tabla de Queso Personal", p: 45000, d: "Quesos, jamones, pan y frutas" },
-            { n: "Tabla de Queso Compartir", p: 70000, d: "Para 4 personas" }
-        ],
-        "Bebidas & Café": [
-            { n: "Americano", p: 5000, d: "Café negro tradicional" },
-            { n: "Capuccino", p: 7000, d: "Espumoso y equilibrado" },
-            { n: "Frapuchino", p: 12000, d: "Café frío cremoso" },
-            { n: "Late", p: 8000, d: "Café con leche suave" },
-            { n: "Mocaccino", p: 9000, d: "Café, leche y chocolate" },
-            { n: "Chocolate caliente", p: 9000, d: "Tradicional" },
-            { n: "Milo-chocolate caliente", p: 5000, d: "Sabor clásico" },
-            { n: "Milo frío", p: 10000, d: "Refrescante" },
-            { n: "Limonada Natural", p: 12000, d: "Cítrica" },
-            { n: "Limonada de Coco", p: 12000, d: "Cremosa" },
-            { n: "Limonada de Café", p: 12000, d: "Mezcla única" },
-            { n: "Soda Saborizada", p: 12000, d: "Burbujeante" },
-            { n: "Jugos naturales", p: 8000, d: "Fruta fresca" },
-            { n: "Jugo verde", p: 15000, d: "Detox saludable" },
-            { n: "Smoothie Deleite", p: 12500, d: "Fresa, mora, banano, naranja" },
-            { n: "Smoothie Post Work", p: 15000, d: "Proteína y banano" }
-        ],
-        "Alcohol & Extras": [
-            { n: "Margarita Deleite", p: 18000, d: "Cóctel de la casa" },
-            { n: "Copa de Vino de Corozo", p: 18000, d: "Especialidad regional" },
-            { n: "Entrada de patacones", p: 17000, d: "Queso costeño y hogao" },
-            { n: "Huevo adicional", p: 1500, d: "1 unidad" },
-            { n: "Porción Aguacate", p: 3000, d: "Fresco" },
-            { n: "Dip de queso crema", p: 3000, d: "Para acompañar" }
-        ]
+    const CONFIG = {
+        nombreNegocio: "DELEITE SALUDABLE",
+        whatsapp: "573214914775", // Harold, ajusta este número al de Deleite
+        idSuscriptor: "VP-CAU-008"
     };
 
-    let carrito = {};
+    function guardarCliente() {
+        const d = { n: document.getElementById('c_nombre').value, d: document.getElementById('c_direccion').value, c: document.getElementById('c_celular').value };
+        if(d.n && d.d && d.c) { 
+            localStorage.setItem('vp_deleite_v3', JSON.stringify(d)); 
+            verificarDatos();
+        } else { alert("Por favor completa los datos de envío."); }
+    }
 
-    function init() {
-        const menuDiv = document.getElementById('menu-completo');
-        for (let cat in menu) {
-            const h3 = document.createElement('h3');
-            h3.innerHTML = `<i class="fas fa-utensils"></i> ${cat}`;
-            menuDiv.appendChild(h3);
-            
-            menu[cat].forEach((p, idx) => {
-                const id = cat.substring(0,2) + idx;
-                const div = document.createElement('div');
-                div.className = 'producto';
-                div.innerHTML = `
-                    <div class="info-prod">
-                        <strong>${p.n}</strong>
-                        <span class="desc-prod">${p.d}</span>
-                        <span style="color:var(--primario); font-weight:bold;">$${p.p.toLocaleString()}</span>
-                    </div>
-                    <div class="controles">
-                        <button class="btn-qty" onclick="cambiarCantidad('${id}', -1, ${p.p}, '${p.n}')">-</button>
-                        <span class="cantidad" id="qty-${id}">0</span>
-                        <button class="btn-qty" onclick="cambiarCantidad('${id}', 1, ${p.p}, '${p.n}')">+</button>
-                    </div>
-                `;
-                menuDiv.appendChild(div);
-            });
+    function verificarDatos() {
+        const g = JSON.parse(localStorage.getItem('vp_deleite_v3'));
+        if(g) {
+            document.getElementById('cliente-editor').classList.add('hidden');
+            document.getElementById('cliente-info-guardada').classList.remove('hidden');
+            document.getElementById('texto-resumen').innerText = `Entregar a: ${g.n}\nDirección: ${g.d}\nTeléfono: ${g.c}`;
+        }
+    }
+    window.onload = verificarDatos;
+
+    function mostrarEditor() {
+        document.getElementById('cliente-editor').classList.remove('hidden');
+        document.getElementById('cliente-info-guardada').classList.add('hidden');
+    }
+
+    function activarGPS() {
+        const c = JSON.parse(localStorage.getItem('vp_deleite_v3'));
+        if(!c) return alert("Primero confirma tus datos de entrega.");
+
+        const lista = document.getElementById('lista_pedido').value;
+        const arroz = document.getElementById('producto_distrileco').value;
+        if(!lista && !arroz) return alert("Agrega algún producto a tu pedido.");
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    const linkMapa = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                    enviarPedido(c, arroz, lista, linkMapa);
+                },
+                () => {
+                    alert("GPS no disponible. Se enviará solo con la dirección escrita.");
+                    enviarPedido(c, arroz, lista, "Ubicación no compartida");
+                },
+                { timeout: 7000, enableHighAccuracy: true }
+            );
+        } else {
+            enviarPedido(c, arroz, lista, "GPS no soportado");
         }
     }
 
-    function cambiarCantidad(id, c, p, n) {
-        if (!carrito[id]) carrito[id] = { q: 0, p: p, n: n };
-        carrito[id].q += c;
-        if (carrito[id].q < 0) carrito[id].q = 0;
-        document.getElementById(`qty-${id}`).innerText = carrito[id].q;
-        updateTotal();
-    }
-
-    function updateTotal() {
-        let t = 0;
-        for (let i in carrito) t += carrito[i].q * carrito[i].p;
-        document.getElementById('monto-total').innerText = `$${t.toLocaleString('es-CO')}`;
-    }
-
-    function actualizarReloj() {
-        const opt = { timeZone: 'America/Bogota', hour: '2-digit', minute: '2-digit', hour12: true };
-        document.getElementById('reloj-colombia').innerHTML = `<i class="far fa-clock"></i> COLOMBIA: ${new Date().toLocaleTimeString('es-CO', opt)}`;
-    }
-    setInterval(actualizarReloj, 1000); actualizarReloj();
-
-    function enviarPedido() {
-        const nom = document.getElementById('nombre').value;
-        const dir = document.getElementById('direccion').value;
-        const tel = document.getElementById('telefono').value;
-        const obs = document.getElementById('observaciones').value;
-
-        if (!nom || !dir || !tel) return alert("⚠️ Completa los datos de entrega.");
+    function enviarPedido(c, arroz, lista, mapa) {
+        let msj = `*${CONFIG.nombreNegocio} - NUEVO PEDIDO*\n`;
+        msj += `--------------------------\n`;
+        msj += `👤 *CLIENTE:* ${c.n}\n📞 *TEL:* ${c.c}\n🏠 *DIR:* ${c.d}\n`;
+        msj += `--------------------------\n`;
         
-        let t = 0, l = "";
-        for (let i in carrito) {
-            if (carrito[i].q > 0) {
-                let sub = carrito[i].q * carrito[i].p;
-                t += sub;
-                l += `✅ *${carrito[i].q}x* ${carrito[i].n} ($${sub.toLocaleString()})\n`;
-            }
-        }
-        if (t === 0) return alert("⚠️ El carrito está vacío.");
+        if(arroz) msj += `🌾 *DISTRILECO:* ${arroz}\n`;
+        if(lista) msj += `🛒 *PEDIDO:* \n${lista}\n`;
+        
+        const obs = document.getElementById('observaciones').value;
+        if(obs) msj += `\n⚠️ *NOTAS:* ${obs}\n`;
 
-        const h = new Date().toLocaleTimeString('es-CO', { timeZone: 'America/Bogota', hour12: true });
-        let msg = `🧾 *ORDEN DÈLEITE SALUDABLE*\n`;
-        msg += `👤 *Cliente:* ${nom}\n📍 *Dir:* ${dir}\n📞 *Tel:* ${tel}\n⏰ *Hora:* ${h}\n`;
-        msg += `----------------------------------\n${l}`;
-        msg += `----------------------------------\n📝 *Notas:* ${obs || "Ninguna"}\n`;
-        msg += `💰 *TOTAL: $${t.toLocaleString()}*\n\n`;
-        msg += `_App desarrollada por Vibras Positivas ©_`;
+        msj += `--------------------------\n`;
+        msj += `📍 *MAPA DE ENTREGA:* \n${mapa}\n\n`;
+        msj += `_App desarrollada por Vibras Positivas_`;
 
-        window.open(`https://wa.me/573214914775?text=${encodeURIComponent(msg)}`, '_blank');
+        window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msj)}`, '_blank');
     }
-    init();
 </script>
 </body>
 </html>
