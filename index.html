@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dèleite Saludable - App Pedidos con GPS</title>
+    <title>Dèleite Saludable - App de Pedidos Total</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -54,7 +54,7 @@
             background: #3498db;
             color: white;
             border: none;
-            padding: 10px;
+            padding: 12px;
             width: 100%;
             border-radius: 10px;
             cursor: pointer;
@@ -164,14 +164,14 @@
         <h3>Datos de Entrega</h3>
         <input type="text" id="nombre" placeholder="Nombre completo">
         <input type="tel" id="telefono" placeholder="Celular de contacto">
-        <input type="text" id="direccion" placeholder="Dirección manual (Barrio/Casa)">
+        <input type="text" id="direccion" placeholder="Barrio / Dirección manual">
         
         <button class="btn-gps" onclick="obtenerUbicacion()">
-            <i class="fas fa-map-marker-alt"></i> Compartir mi Ubicación GPS
+            <i class="fas fa-map-marker-alt"></i> Fijar mi Ubicación GPS
         </button>
-        <div id="status-gps" style="font-size: 0.8rem; text-align: center; color: #27ae60;"></div>
+        <div id="status-gps" style="font-size: 0.8rem; text-align: center; color: #27ae60; font-weight: bold;"></div>
 
-        <textarea id="observaciones" rows="2" placeholder="Notas (Ej: San Valentín, sin cebolla...)"></textarea>
+        <textarea id="observaciones" rows="2" placeholder="Notas adicionales (Ej: San Valentín, sin cebolla...)"></textarea>
     </div>
 
     <div id="menu-completo"></div>
@@ -179,7 +179,7 @@
 
 <div class="carrito-footer">
     <div class="total-fila">
-        <span>Total:</span>
+        <span>Total Pedido:</span>
         <span id="monto-total">$0</span>
     </div>
     <button class="btn-enviar" onclick="enviarPedido()">
@@ -197,28 +197,77 @@
     const menu = {
         "Desayunos": [
             { n: "Desayuno Sencillo", p: 16000, d: "Arepa, quesito, fruta y huevos al gusto, pan tajado" },
-            { n: "Bowl Costeño", p: 24000, d: "Plátano verde, hogao, chicharrón, huevos y queso costeño" },
-            { n: "Huevos Benedectinos", p: 23000, d: "Tostadas, huevo pochados, aguacate, tocineta" },
-            { n: "Sanduche de Huevo", p: 16000, d: "Huevos revueltos, queso crema, tocineta y pan de orégano" },
-            { n: "Sándwich gratinado de pollo", p: 20000, d: "Pollo en salsa, mozzarella y parmesano" },
-            { n: "Desayuno con patacones", p: 19000, d: "Patacones, huevo revuelto, chicharrón y hogao" }
+            { n: "Bowl Costeño", p: 24000, d: "Plátano verde, hogao, chicharrón, huevos revueltos y queso costeño" },
+            { n: "Huevos Benedectinos", p: 23000, d: "Tostadas, queso crema, huevo pochados, aguacate, tocineta y salsa holandesa" },
+            { n: "Sanduche de Huevo", p: 16000, d: "Huevos revueltos, queso crema, tocineta y pan de oregano" },
+            { n: "Wafles con yogurt/helado", p: 19000, d: "Wafles con frutas y yogurt griego" },
+            { n: "Parfait Disfruta", p: 17000, d: "Yogurt griego, frutas y mermelada" },
+            { n: "Ensalada de frutas con yogurt/helado", p: 18000, d: "Mezcla de frutas frescas" },
+            { n: "Sándwich gratinado de pollo", p: 20000, d: "Relleno de pollo en salsa, mozzarella y parmesano, coronado con huevo" },
+            { n: "Avena proteína", p: 25000, d: "Avena con leche almendra, proteína ISO, banano, fresa, arándanos y almendras" },
+            { n: "Wafles don queso", p: 18000, d: "Wafles de pan de yuca con huevos revueltos, tocineta y fruta" },
+            { n: "Keto", p: 18000, d: "Huevos al gusto, tocineta, aguacate, ensalada y zanahoria" },
+            { n: "Desayuno con patacones", p: 19000, d: "Patacones, huevo revuelto, chicharrón, queso costeño y hogao" },
+            { n: "Desayuno con calentado", p: 22000, d: "Calentado, huevos revueltos, queso, arepa y hogao" },
+            { n: "Arepa con carne/pollo desmechado", p: 18000, d: "Proteína al gusto" }
         ],
         "Almuerzos & Platos Fuertes": [
-            { n: "Salmón Deleite al ajillo", p: 47000, d: "A las finas hierbas con vegetales y papas" },
-            { n: "Chuzo de solomito", p: 32000, d: "Carne solomito, papas francesa y ensalada" },
-            { n: "Picadas deleite", p: 50000, d: "Res, pollo, cerdo, chicharrón, chorizo y yuca" },
-            { n: "Punta de anca al carbón", p: 45000, d: "250g con papas y ensalada" },
-            { n: "Pechuga de pollo 250g", p: 29000, d: "Acompañado de papas francesa y ensalada" }
+            { n: "Almuerzo con costichi al barril", p: 28000, d: "Costilla premium al barril con acompañantes" },
+            { n: "Salmón Deleite al ajillo", p: 47000, d: "Salmón a las finas hierbas, vegetales y papitas/patacones" },
+            { n: "Chuzo de solomito", p: 32000, d: "Solomito, papas francesa y ensalada verde" },
+            { n: "Picadas deleite", p: 50000, d: "Res, pollo, cerdo, chicharrón, chorizo, yuca, patacón, ensalada y salsas" },
+            { n: "Solomito en salsa de champiñones", p: 45000, d: "350g de carne, papitas y ensalada verde" },
+            { n: "Punta de anca al carbon", p: 45000, d: "250g con papas/patacones y ensalada verde o salteada" },
+            { n: "Pechuga de pollo 250 g", p: 29000, d: "Con papas a la francesa y ensalada" },
+            { n: "Ensalada César deleite", p: 25000, d: "Crotones de pan y aderezo especial" },
+            { n: "Ceviche de chicharron", p: 30000, d: "Chicharrón, cebolla, tomate y plátanos" }
         ],
-        "Postres & Dulces": [
-            { n: "Torta Red Velvet", p: 18000, d: "Harina de avena y almendras (San Valentín)" },
-            { n: "Torta Chocolate", p: 18000, d: "Con ganache de chocolate" },
-            { n: "Wafles con frutas", p: 19000, d: "Con yogurt griego o helado" }
+        "Media Tarde | Noche": [
+            { n: "Sanduche de Pollo", p: 20000, d: "Pechuga, jamón, mozzarella, cebolla caramelizada, lechuga y tomate" },
+            { n: "Bowl de Proteína", p: 25000, d: "Batido de fresas congeladas, 20g de proteína, granola y frutas" },
+            { n: "Sanduche Cubano", p: 15000, d: "Vegetales, salsa ajo, jamón, mozzarella y pan orégano" },
+            { n: "Sanduche cubano ropa vieja bbq", p: 20000, d: "Tradicional receta con carne desmechada" },
+            { n: "Sanduche de costichi", p: 20000, d: "Pan artesanal, costichi, queso asado, encurtida y guacamole" },
+            { n: "Combo mini hamburguesas", p: 25000, d: "3 mini hamburguesitas, papitas y jugo natural" },
+            { n: "Salchipapa Juanjo", p: 14000, d: "Francesa, salchicha, queso rayado, tocineta y salsas" },
+            { n: "Entrada de patacones", p: 17000, d: "Patacones, queso costeño y hogao" }
         ],
-        "Bebidas": [
-            { n: "Limonada de Coco", p: 12000, d: "Cremosa y refrescante" },
-            { n: "Copa de Vino de Corozo", p: 18000, d: "Especial San Valentín" },
-            { n: "Jugo verde", p: 15000, d: "Detox saludable" }
+        "Panadería & Tortas": [
+            { n: "Pan trenza", p: 22000, d: "Pan de orégano, crema de ajo, perejil y cilantro" },
+            { n: "Pan personal de la casa", p: 4000, d: "Sabor surtido diario" },
+            { n: "Torta Arandanos y Almendras (Keto)", p: 25000, d: "Harina almendras, arándanos frescos y estevia" },
+            { n: "Torta Arándanos y avena", p: 18000, d: "Endulzada con avena y harina de avena" },
+            { n: "Torta de Chocolate", p: 18000, d: "Con crema de ganache de chocolate" },
+            { n: "Torta Red Velvet", p: 18000, d: "Harina de avena y almendras, estevia" },
+            { n: "Torta Naranja", p: 18000, d: "Sabor cítrico tradicional" },
+            { n: "Torta Banano, queso y bocadillo", p: 15000, d: "Clásico sabor" },
+            { n: "Porción de Torta", p: 15000, d: "Sabor a elección" },
+            { n: "Tabla de Queso Personal", p: 45000, d: "Quesos, jamones, pan, dip y frutas" },
+            { n: "Tabla de Queso Compartir", p: 70000, d: "Para 4 personas" }
+        ],
+        "Café & Bebidas": [
+            { n: "Americano", p: 5000, d: "Café negro" },
+            { n: "Capuccino", p: 7000, d: "Espumoso" },
+            { n: "Frapuchino", p: 12000, d: "Frío y dulce" },
+            { n: "Late", p: 8000, d: "Café con leche" },
+            { n: "Mocaccino / Chocolate caliente", p: 9000, d: "Caliente" },
+            { n: "Milo-chocolate caliente", p: 5000, d: "Tradicional" },
+            { n: "Limonada Natural", p: 12000, d: "Refrescante" },
+            { n: "Limonada de Coco", p: 12000, d: "Cremosa" },
+            { n: "Limonada de Café", p: 12000, d: "Sorprendente" },
+            { n: "Soda Saborizada", p: 12000, d: "Refrescante" },
+            { n: "Milo frio", p: 10000, d: "Para el calor" },
+            { n: "Jugos naturales", p: 8000, d: "Fruta fresca" },
+            { n: "Jugo verde", p: 15000, d: "Nutritivo" },
+            { n: "Smoothie Deleite", p: 12500, d: "Fresa, mora, banano, naranja" },
+            { n: "Smoothie Post Work", p: 15000, d: "Proteina y banano" },
+            { n: "Margarita Deleite", p: 18000, d: "Cóctel de la casa" },
+            { n: "Copa de Vino de Corozo", p: 18000, d: "Especial San Valentín" }
+        ],
+        "Adicionales": [
+            { n: "1 huevo", p: 1500, d: "Adicional" },
+            { n: "Aguacate", p: 3000, d: "Porción fresca" },
+            { n: "Dip de queso crema", p: 3000, d: "Para acompañar" }
         ]
     };
 
@@ -238,7 +287,7 @@
                     <div class="info-prod">
                         <strong>${p.n}</strong>
                         <span class="desc-prod">${p.d}</span>
-                        <span style="color:var(--primario); font-weight:bold;">$${p.p.toLocaleString()}</span>
+                        <span style="color:var(--primario); font-weight:bold;">$${p.p.toLocaleString('es-CO')}</span>
                     </div>
                     <div class="controles">
                         <button class="btn-qty" onclick="cambiarCantidad('${id}', -1, ${p.p}, '${p.n}')">-</button>
@@ -258,7 +307,7 @@
                 ubicacionGPS = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
                 document.getElementById('status-gps').innerText = "✅ Ubicación fijada con éxito";
             }, () => {
-                alert("No pudimos obtener tu GPS. Por favor escribe tu dirección manual.");
+                alert("No se pudo obtener el GPS. Escribe tu dirección manual.");
                 document.getElementById('status-gps').innerText = "❌ GPS no disponible";
             });
         }
@@ -290,26 +339,26 @@
         const tel = document.getElementById('telefono').value;
         const obs = document.getElementById('observaciones').value;
 
-        if (!nom || !tel) return alert("⚠️ Completa tu nombre y celular.");
+        if (!nom || !tel) return alert("⚠️ Nombre y celular son obligatorios.");
         
         let t = 0, l = "";
         for (let i in carrito) {
             if (carrito[i].q > 0) {
                 let sub = carrito[i].q * carrito[i].p;
                 t += sub;
-                l += `✅ *${carrito[i].q}x* ${carrito[i].n} ($${sub.toLocaleString()})\n`;
+                l += `✅ *${carrito[i].q}x* ${carrito[i].n} ($${sub.toLocaleString('es-CO')})\n`;
             }
         }
-        if (t === 0) return alert("⚠️ Agrega productos al pedido.");
+        if (t === 0) return alert("⚠️ El carrito está vacío.");
 
         let msg = `🧾 *ORDEN DÈLEITE SALUDABLE*\n`;
         msg += `👤 *Cliente:* ${nom}\n📞 *Tel:* ${tel}\n`;
-        msg += `📍 *Dirección:* ${dir || "Ver GPS abajo"}\n`;
-        if (ubicacionGPS) msg += `🌍 *Ubicación GPS:* ${ubicacionGPS}\n`;
+        msg += `📍 *Dir:* ${dir || "Ver GPS abajo"}\n`;
+        if (ubicacionGPS) msg += `🌍 *GPS:* ${ubicacionGPS}\n`;
         msg += `----------------------------------\n${l}`;
         msg += `----------------------------------\n📝 *Notas:* ${obs || "Ninguna"}\n`;
-        msg += `💰 *TOTAL: $${t.toLocaleString()}*\n\n`;
-        msg += `_Desarrollado por Vibras Positivas ©_`;
+        msg += `💰 *TOTAL: $${t.toLocaleString('es-CO')}*\n\n`;
+        msg += `_App desarrollada por Vibras Positivas ©_`;
 
         window.open(`https://wa.me/573214914775?text=${encodeURIComponent(msg)}`, '_blank');
     }
